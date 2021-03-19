@@ -1,7 +1,7 @@
 use std::env;
 
-use taquin::board::board::Board;
-use taquin::graph::graph::Graph;
+use taquin::board::Board;
+use taquin::graph::Graph;
 
 fn main() {
     let argv: Vec<String> = env::args().collect();

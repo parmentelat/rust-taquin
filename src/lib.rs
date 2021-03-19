@@ -1,5 +1,5 @@
 pub mod board;
-pub use crate::board::board::Board;
+pub use crate::board::Board;
 
 pub mod graph;
-pub use crate::graph::graph::Graph;
+pub use crate::graph::Graph;
