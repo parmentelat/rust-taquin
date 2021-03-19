@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::fmt;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Board {
     implem: [i8; 9],
 }
@@ -99,5 +100,63 @@ impl fmt::Display for Board {
             self.implem[0], self.implem[1], self.implem[2],
             self.implem[3], self.implem[4], self.implem[5],
             self.implem[6], self.implem[7], self.implem[8])
+    }
+}
+
+// make a board object hashable
+impl std::hash::Hash for Board {
+    fn hash<H>(&self, state: &mut H)
+    where H: std::hash::Hasher, {
+        for i in 0..9 {
+            self.implem[i].hash(state);
+        }
+    }
+}
+
+// this trait is required too on hashable objects
+impl PartialEq for Board {
+    fn eq(&self, other: &Self) -> bool {
+        for i in 0..9 {
+            if self.implem[i] != other.implem[i] {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+impl Eq for Board {}
+
+//////////////////////////
+use std::collections::HashMap;
+
+// non generic for now
+// here <T> will be Board
+// it will thus require the Hash and Eq traits
+
+pub struct Adjacencies {
+    pub hash: HashMap<Board, i8>,
+}
+impl Adjacencies {
+    fn new() -> Adjacencies {
+        return Adjacencies{hash: HashMap::new(),}
+    }
+}
+
+pub struct Graph {
+    pub vertices: HashMap<Board, Adjacencies>,
+}
+
+impl Graph {
+    pub fn add_edge(&mut self, b1: Board, b2: Board, distance: i8) {
+        let adjacencies = self.vertices.entry(b1).or_insert(Adjacencies::new());
+        let previous = adjacencies.hash.entry(b2).or_insert(0);
+        *previous += distance;
+    }
+}
+
+impl fmt::Display for Graph {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "graph with {} vertices", self.vertices.len())
     }
 }

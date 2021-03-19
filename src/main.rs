@@ -1,6 +1,7 @@
 use std::env;
 
 use taquin::Board;
+use taquin::Graph;
 
 fn main() {
     let argv: Vec<String> = env::args().collect();
@@ -17,10 +18,20 @@ fn main() {
         if index == 0 {
             continue
         }
-        let parsed = Board::from_file(filename);
-        print!("from file {} is\n{}", filename, parsed);
+        let board = Board::from_file(filename);
+        print!("from file {} is\n{}", filename, board);
 
-        let solvable = parsed.solvable();
+        let solvable = board.solvable();
         println!("solvable ? {}", solvable);
+
+        use std::collections::HashMap;
+
+        let mut g = Graph{
+            vertices: HashMap::new(),
+        };
+        for next in board.neighbours().iter() {
+            g.add_edge(board, *next, 1);
+        }
+        println!("{}", g)
     }
 }
