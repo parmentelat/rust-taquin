@@ -21,10 +21,21 @@ pub struct Graph {
 }
 
 impl Graph {
+
+    pub fn new() -> Graph {
+        return Graph{
+            vertices: HashMap::new(),
+        }
+    }
+
     pub fn add_edge(&mut self, b1: Board, b2: Board, distance: i8) {
         let adjacencies = self.vertices.entry(b1).or_insert(Adjacencies::new());
         let previous = adjacencies.hash.entry(b2).or_insert(0);
         *previous += distance;
+    }
+
+    pub fn is_visited(&self, board: &Board) -> bool {
+        return self.vertices.contains_key(board);
     }
 }
 
