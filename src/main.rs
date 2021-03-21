@@ -4,8 +4,8 @@ use taquin::graph::Graph;
 //use taquin::dijkstra::Dijkstra;
 
 fn main() {
-    let graph = Graph::build();
-    println!("{}", graph);
+    let full_graph = Graph::full_build();
+    println!("{}", full_graph);
 }
 
 

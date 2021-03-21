@@ -41,7 +41,7 @@ impl Graph {
         return self.vertices.contains_key(board);
     }
     // build the complete graph with 9!/2 vertices
-    pub fn build() -> Graph {
+    pub fn full_build() -> Graph {
         let mut graph = Graph::new();
         let mut fifo = Fifo::new();
         fifo.push_back(Board::zero());
@@ -66,5 +66,30 @@ impl fmt::Display for Graph {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "graph with {} vertices and {} edges",
             self.nb_vertices(), self.nb_edges())
+    }
+}
+
+////////////////////////////////////////
+#[cfg(test)]
+mod test {
+    use super::Graph;
+    use crate::board::Board;
+
+    #[test]
+    fn test_basics() {
+        let mut g = Graph::new();
+        let start = Board::zero();
+        for neighbour in start.neighbours().iter() {
+            g.add_edge(start, *neighbour, 1);
+        }
+        assert_eq!(g.nb_vertices(), 1);
+        assert_eq!(g.nb_edges(), 2);
+    }
+
+    #[test]
+    fn test_full_build() {
+        let full_graph = Graph::full_build();
+        assert_eq!(full_graph.nb_vertices(), 181440);
+        assert_eq!(full_graph.nb_edges(), 564480);
     }
 }
