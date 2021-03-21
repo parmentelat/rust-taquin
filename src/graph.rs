@@ -1,41 +1,15 @@
 use std::fmt;
+use std::cmp::Ordering;
+
 use std::collections::HashMap;
 use std::collections::VecDeque;
+use std::collections::BinaryHeap;
 
 use crate::board::Board;
 
 
-
-struct Fifo {
-    contents: VecDeque<Board>,
-}
-impl Fifo {
-    pub fn new() -> Fifo {
-        return Fifo {
-            contents: VecDeque::new(),
-        }
-    }
-    pub fn insert(&mut self, b: Board) {
-        self.contents.push_back(b)
-    }
-    pub fn retrieve(&mut self) -> Option<Board> {
-        self.contents.pop_front()
-    }
-}
-
-
-
-pub struct Adjacencies {
-    pub hash: HashMap<Board, i8>,
-}
-impl Adjacencies {
-    fn new() -> Adjacencies {
-        return Adjacencies{hash: HashMap::new()}
-    }
-    pub fn len(&self) -> usize {
-        self.hash.len()
-    }
-}
+type Fifo = VecDeque<Board>;
+type Adjacencies = HashMap<Board, i8>;
 
 
 
@@ -60,7 +34,7 @@ impl Graph {
     }
     pub fn add_edge(&mut self, b1: Board, b2: Board, distance: i8) {
         let adjacencies = self.vertices.entry(b1).or_insert(Adjacencies::new());
-        let previous = adjacencies.hash.entry(b2).or_insert(0);
+        let previous = adjacencies.entry(b2).or_insert(0);
         *previous += distance;
     }
     pub fn is_visited(&self, board: &Board) -> bool {
@@ -69,16 +43,16 @@ impl Graph {
     // build the complete graph with 9!/2 vertices
     pub fn build() -> Graph {
         let mut graph = Graph::new();
-        let mut queue = Fifo::new();
-        queue.insert(Board::zero());
+        let mut fifo = Fifo::new();
+        fifo.push_back(Board::zero());
         let mut proceed = true;
         while proceed {
-            if let Some(scanned) = queue.retrieve() {
+            if let Some(scanned) = fifo.pop_front() {
                 if graph.is_visited(&scanned) {
                     continue
                 }
                 for neighbour in scanned.neighbours() {
-                    queue.insert(neighbour);
+                    fifo.push_back(neighbour);
                     graph.add_edge(scanned, neighbour, 1);
                 }
             } else {
