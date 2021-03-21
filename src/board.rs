@@ -9,7 +9,7 @@ pub struct Board {
 
 impl Board {
     pub fn zero() -> Board {
-        return Board{
+        return Board {
             implem: [1, 2, 3, 4, 5, 6, 7, 8, 0],
         }
     }
