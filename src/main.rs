@@ -1,10 +1,10 @@
-use std::env;
+// use std::env;
 
 use taquin::graph::Graph;
 //use taquin::dijkstra::Dijkstra;
 
 fn main() {
-    let mut graph = Graph::build();
+    let graph = Graph::build();
     println!("{}", graph);
 }
 

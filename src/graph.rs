@@ -56,7 +56,7 @@ impl Graph {
     }
     pub fn nb_edges(&self) -> usize {
         let mut count = 0;
-        for (board, adjacencies) in self.vertices.iter() {
+        for (_board, adjacencies) in self.vertices.iter() {
             count += adjacencies.len()
         }
         count
