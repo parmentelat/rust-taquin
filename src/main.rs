@@ -1,11 +1,11 @@
 use std::env;
 
-use taquin::dijkstra::Dijkstra;
+use taquin::graph::Graph;
+//use taquin::dijkstra::Dijkstra;
 
 fn main() {
-    let mut dijkstra = Dijkstra::new();
-    dijkstra.scan();
-    println!("{}", dijkstra);
+    let mut graph = Graph::build();
+    println!("{}", graph);
 }
 
 
@@ -36,7 +36,7 @@ fn main() {
 //         use std::collections::HashMap;
 
 //         let mut g = Graph::new();
-        
+
 //         for next in board.neighbours().iter() {
 //             g.add_edge(board, *next, 1);
 //         }
