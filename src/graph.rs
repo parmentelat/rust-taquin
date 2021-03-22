@@ -15,9 +15,6 @@ type Distance = i16;
 type Fifo = VecDeque<Board>;
 type Adjacencies = HashMap<Board, Distance>;
 
-const DEBUG: bool = false;
-const DEBUG_STEP: isize = 1;
-const DEBUG_COUNT: isize = 200_000;
 
 // this is what will go into the BinaryHeap
 #[derive(Debug, Clone)]
@@ -144,23 +141,11 @@ impl Graph {
                 // we can mark this board then
                 solutions.insert(visiting, path.clone());
                 counter += 1;
-                if DEBUG && (counter % DEBUG_STEP) == 0 {
-                    if let Ok(duration) = SystemTime::now().duration_since(clap) {
-                        println!("------ {} solutions so far after {}s",
-                                solutions.len(), duration.as_secs());
-                        print!("the path to here is ");
-                        path.unroll();
-                        println!();
-                    }
-                }
                 // add all outgoing edges in queue
                 // avoid the ones going back to visited nodes
                 for neighbour in visiting.neighbours().iter() {
                     // do not bother if neighbour has already been marked
                     if solutions.contains_key(neighbour) {
-                        if DEBUG {
-                            println!("debug: ignoring {}", neighbour);
-                        }
                         continue
                     }
                     // xxx here the +1 should be found in the graph
@@ -169,23 +154,10 @@ impl Graph {
                         previous: Some(Box::new(path.clone())),
                         board: *neighbour,
                         distance: path.distance+1};
-                    if DEBUG {
-                        println!("debug - inserting {}", new_path);
-                    }
                     priority_queue.push(Reverse(new_path));
-                }
-                if DEBUG {
-                    for r in priority_queue.iter() {
-                        if let Reverse(q) = r {
-                            println!("debug in Q {}", &q);
-                        }
-                    }
                 }
             } else {
                 proceed = false
-            }
-            if DEBUG && (counter == DEBUG_COUNT) {
-                return solutions;
             }
         }
         solutions

@@ -92,23 +92,25 @@ impl Board {
         return None
     }
 
-    pub fn solvable(&self) -> bool {
-        let [hx, hy] = Board::i_to_xy(self.hole());
-        let expected_parity = ((hx + hy) % 2) == 0;
+    // not working apparently, and we don't need it anyways
+    // pub fn solvable(&self) -> bool {
+    //     let [hx, hy] = Board::i_to_xy(self.hole());
+    //     let expected_parity = ((hx + hy) % 2) == 0;
 
-        let size = 9;
-        let mut swaps = 0;
-        for i in 0..size {
-            for j in i+1..size {
-                if self.implem[j] < self.implem[j] {
-                    swaps += 1;
-                }
-            }
-        }
-        let actual_parity = (swaps % 2) == 0;
+    //     const size : usize = 9;
+    //     let mut swaps = 0;
+    //     for i in 0..size {
+    //         for j in i+1..size {
+    //             if self.implem[j] < self.implem[j] {
+    //                 swaps += 1;
+    //             }
+    //         }
+    //     }
+    //     let actual_parity = (swaps % 2) == 0;
 
-        return expected_parity == actual_parity;
-    }
+    //     println!("expected par={} actual par={}", expected_parity, actual_parity);
+    //     return expected_parity == actual_parity;
+    // }
 }
 
 // ugly but good enough for now
