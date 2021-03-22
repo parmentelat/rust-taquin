@@ -2,6 +2,11 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::fmt;
 
+#[derive(Debug)]
+pub enum Move {
+    Up, Right, Down, Left,
+}
+
 #[derive(Debug, Copy, Clone)]
 pub struct Board {
     implem: [i8; 9],
@@ -74,6 +79,19 @@ impl Board {
         return result;
     }
 
+    // this is purely cosmetic in order to display a Path instance nicely
+    // returns the move to use to go from other to self
+    // do not check consistency
+    pub fn move_from(&self, other: &Board) -> Option<Move> {
+        let [thx, thy] = Board::i_to_xy(self.hole());
+        let [ohx, ohy] = Board::i_to_xy(other.hole());
+        if thx - ohx == 1 { return Some(Move::Right)}
+        if thx - ohx == -1 { return Some(Move::Left)}
+        if thy - ohy == 1 { return Some(Move::Down)}
+        if thy - ohy == -1 { return Some(Move::Up)}
+        return None
+    }
+
     pub fn solvable(&self) -> bool {
         let [hx, hy] = Board::i_to_xy(self.hole());
         let expected_parity = ((hx + hy) % 2) == 0;
@@ -96,7 +114,7 @@ impl Board {
 // ugly but good enough for now
 impl std::fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {} {}\n{} {} {}\n{} {} {}\n",
+        write!(f, "[{} {} {} - {} {} {} - {} {} {}]",
             self.implem[0], self.implem[1], self.implem[2],
             self.implem[3], self.implem[4], self.implem[5],
             self.implem[6], self.implem[7], self.implem[8])
