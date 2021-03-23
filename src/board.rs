@@ -66,13 +66,11 @@ impl Board {
         let mut result: Vec<Board> = Vec::new();
         for dx in [-1, 0, 1].iter() {
             for dy in [-1, 0, 1].iter() {
-                if (dx+dy == 1) || (dx+dy == -1) {
+                if ((dx+dy == 1) || (dx+dy == -1))
+                 && (0 <= hx+dx && hx+dx < 3)
+                 && (0 <= hy+dy && hy+dy < 3) {
                     // potential new hole: 4 directions
-                    let nhole = Board::xy_to_i(hx+dx, hy+dy);
-                    // may still be outside
-                    if 0 <= nhole && nhole < 9 {
-                        result.push(self.swap(hole, nhole));
-                    }
+                    result.push(self.swap(hole, Board::xy_to_i(hx+dx, hy+dy)));
                 }
             }
         }
