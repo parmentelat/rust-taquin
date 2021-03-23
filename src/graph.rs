@@ -170,6 +170,16 @@ impl fmt::Display for Graph {
     }
 }
 
+pub type Histogram = HashMap<i16, isize>;
+
+pub fn histogram(solutions: &Solutions) -> Histogram {
+    let mut number_by_distance = Histogram::new();
+    for (boadr, path) in solutions.iter() {
+        let previous = number_by_distance.entry(path.distance).or_insert(0);
+        *previous += 1;
+    }
+    number_by_distance
+}
 ////////////////////////////////////////
 #[cfg(test)]
 mod test {
