@@ -13,7 +13,7 @@ fn main() {
 
     let zero = Board::zero();
     let solutions = full_graph.dijkstra(&zero);
-    let max = solutions.len();
+    //let max = solutions.len();
 
     // sort the histogram by distance
     let histo = histogram(&solutions);

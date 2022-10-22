@@ -119,7 +119,7 @@ impl Graph {
 
     pub fn dijkstra(&self, start: &Board) -> Solutions {
 
-        let clap = SystemTime::now();
+        let _clap = SystemTime::now();
 
         // the result is a hashmap board => Path
         let mut solutions = Solutions::new();
@@ -128,7 +128,7 @@ impl Graph {
         priority_queue.push(
             Reverse(Path { previous: None, board: *start, distance: 0, }));
 
-        let mut counter = 0;
+        // let mut counter = 0;
         let mut proceed = true;
         while proceed {
             if let Some(Reverse(path)) = priority_queue.pop() {
@@ -140,7 +140,7 @@ impl Graph {
                 }
                 // we can mark this board then
                 solutions.insert(visiting, path.clone());
-                counter += 1;
+                // counter += 1;
                 // add all outgoing edges in queue
                 // avoid the ones going back to visited nodes
                 for neighbour in visiting.neighbours().iter() {
@@ -174,7 +174,7 @@ pub type Histogram = HashMap<i16, isize>;
 
 pub fn histogram(solutions: &Solutions) -> Histogram {
     let mut number_by_distance = Histogram::new();
-    for (boadr, path) in solutions.iter() {
+    for (_board, path) in solutions.iter() {
         let previous = number_by_distance.entry(path.distance).or_insert(0);
         *previous += 1;
     }
